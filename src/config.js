@@ -41,6 +41,8 @@ const config = {
   },
   test: { },
   development: {
+    ip: process.env.IP || undefined,
+    port: process.env.PORT || 9000,
     mongo: {
       uri: process.env.MONGO_URL,
       options: {
