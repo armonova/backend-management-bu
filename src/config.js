@@ -54,7 +54,7 @@ const config = {
     ip: process.env.IP || undefined,
     port: process.env.PORT || 8080,
     mongo: {
-      uri: process.env.MONGODB_URI || 'mongodb://localhost/backend-management-bu'
+      uri: process.env.MONGO_URL || 'mongodb://localhost/backend-management-bu'
     }
   }
 }
