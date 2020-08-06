@@ -41,7 +41,7 @@ const config = {
   test: { },
   development: {
     mongo: {
-      uri: 'mongodb+srv://master-user:K711Pmj0ECrUQXCn@management-bu.usqz8.mongodb.net/dev?retryWrites=true&w=majority',
+      uri: process.env.MONGO_URL,
       options: {
         debug: true
       }
