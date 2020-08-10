@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { middleware as query } from 'querymen'
-import { create, index, show, update, destroy } from './controller'
+import { create, index, show, update, destroy, indexCallback } from './controller'
 export YoutubeApi, { schema } from './model'
 
 const router = new Router()
@@ -27,6 +27,10 @@ router.post('/',
 router.get('/',
   query(),
   index)
+
+router.get('/callback',
+  query(),
+  indexCallback)
 
 /**
  * @api {get} /oauth2callback/:id Retrieve youtube api
