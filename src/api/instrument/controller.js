@@ -7,6 +7,7 @@ export const create = ({ bodymen: { body } }, res, next) =>
     .then(success(res, 201))
     .catch(next)
 
+    // test deploy
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
   Instrument.find(query, select, cursor)
     .then((instruments) => instruments.map((instrument) => instrument.view()))
