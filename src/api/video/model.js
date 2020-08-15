@@ -1,14 +1,14 @@
 import mongoose, { Schema } from 'mongoose'
 
 const videoSchema = new Schema({
-  // user: {
-  //   type: Schema.ObjectId,
-  //   ref: 'User',
-  //   required: true
-  // },
-  intrument: {
-    type: String,
-
+  user: {
+    type: Schema.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  intruments: {
+    type: [Schema.ObjectId],
+    ref: 'Instruments'
   },
   year: {
     type: Number
@@ -26,6 +26,8 @@ const videoSchema = new Schema({
     transform: (obj, ret) => { delete ret._id }
   }
 })
+
+// TODO: update all the api with new atributer on model schema
 
 videoSchema.methods = {
   view (full) {
