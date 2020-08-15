@@ -5,7 +5,7 @@ import mongoose, { Schema } from 'mongoose'
 import mongooseKeywords from 'mongoose-keywords'
 import { env } from '../../config'
 
-const roles = ['user', 'admin']
+const roles = ['user', 'admin', 'director', 'nipeLeader']
 
 const userSchema = new Schema({
   email: {
@@ -38,11 +38,47 @@ const userSchema = new Schema({
   picture: {
     type: String,
     trim: true
+  },
+  course: { // TODO: conferir se não é interessante criar uma coleção só para curso
+    type: String,
+    trim: true
+  },
+  active: {
+    type: Boolean,
+    required: true
+  },
+  validated: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
+  instruments: {
+    type: [Schema.ObjectId],
+    ref: 'Instrument',
+    default: []
+  },
+  birthDate: {
+    type: Date,
+    required: true
+  },
+  phone: {
+    type: String
+  },
+  registerNumber: { // número de matrícula
+    type: Number,
+    unique: true
+  },
+  cpf: {
+    type: Number,
+    unique: true
   }
+
 }, {
   timestamps: true
 })
 
+
+// TODO: conferir esse métodos que são específicos da coleção de users
 userSchema.path('email').set(function (email) {
   if (!this.picture || this.picture.indexOf('https://gravatar.com') === 0) {
     const hash = crypto.createHash('md5').update(email).digest('hex')

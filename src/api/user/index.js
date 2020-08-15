@@ -9,6 +9,8 @@ export User, { schema } from './model'
 const router = new Router()
 const { email, password, name, picture, role } = schema.tree
 
+// TODO: passar os novos campor criados n
+
 /**
  * @api {get} /users Retrieve users
  * @apiName RetrieveUsers
