@@ -18,43 +18,50 @@ export const show = ({ params }, res, next) =>
 export const showMe = ({ user }, res) =>
   res.json(user.view(true))
 
-export const create = ({ bodymen: { body } }, res, next) =>
-  User.create(body)
-    .then((user) => user.view(true))
-    .then(success(res, 201))
-    .catch((err) => {
-      /* istanbul ignore else */
-      if (err.name === 'MongoError' && err.code === 11000) {
+  export const create = ({ bodymen: { body }, user }, res, next) => {
+    body.createdBy = user
+    User.create(body)
+      .then(user => {
+        sign(user.id)
+          .then((token) => ({ token, user: user.view(true) }))
+          .then(success(res, 201))
+      })
+      .catch((err) => {
+        /* istanbul ignore else */
+        console.log(err)
+        if (err.name === 'MongoError' && err.code === 11000) {
+          res.status(409).json({
+            valid: false,
+            param: Object.keys(err.keyPattern)[0],
+            message: err.keyValue[Object.keys(err.keyPattern)[0]] + ' already registered.'
+          })
+        } else {
+          next(err)
+        }
+      })
+  }
+
+export const createMaster = ({ bodymen: { body } }, res, next) =>
+  User.countDocuments()
+    .then(count => {
+      if (count === 0) {
+        User.create(body)
+          .then(user => {
+            sign(user.id)
+              .then((token) => ({ token, user: user.view(true) }))
+              .then(success(res, 201))
+          })
+          .catch((err) => { next(err) })
+      } else {
         res.status(409).json({
           valid: false,
           param: 'email',
-          message: 'email already registered'
+          message: 'Já existe(m) usuário(s) cadastrado(s). Só é permitido criar um usuário com a chave mestra.'
         })
-      } else {
-        next(err)
       }
     })
-    export const createMaster = ({ bodymen: { body } }, res, next) =>
-    User.countDocuments()
-      .then(count => {
-        if (count === 0) {
-          User.create(body)
-            .then(user => {
-              sign(user.id)
-                .then((token) => ({ token, user: user.view(true) }))
-                .then(success(res, 201))
-            })
-            .catch((err) => { next(err) })
-        } else {
-          res.status(409).json({
-            valid: false,
-            param: 'email',
-            message: 'Já existe(m) usuário(s) cadastrado(s). Só é permitido criar um usuário com a chave mestra.'
-          })
-        }
-      })
-      .then(success(res))
-      .catch(next)
+    .then(success(res))
+    .catch(next)
 
 export const update = ({ bodymen: { body }, params, user }, res, next) =>
   User.findById(params.id === 'me' ? user.id : params.id)

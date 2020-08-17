@@ -64,9 +64,8 @@ const userSchema = new Schema({
   phone: {
     type: String
   },
-  registerNumber: { // número de matrícula
-    type: Number,
-    unique: true
+  registerNumber: {
+    type: Number
   },
   cpf: {
     type: Number,
