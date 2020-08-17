@@ -2,12 +2,12 @@ import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { password as passwordAuth, master, token } from '../../services/passport'
-import { index, showMe, show, create, update, updatePassword, destroy } from './controller'
+import { index, showMe, show, create, update, updatePassword, destroy, createMaster } from './controller'
 import { schema } from './model'
 export User, { schema } from './model'
 
 const router = new Router()
-const { email, password, name, picture, role } = schema.tree
+const { email, password, name, picture, role, course, active, validated, instruments, birthDate, phone, registerNumber, cpf } = schema.tree
 
 // TODO: passar os novos campor criados n
 
@@ -68,8 +68,37 @@ router.get('/:id',
  */
 router.post('/',
   master(),
-  body({ email, password, name, picture, role }),
+  body({ email, password, name, picture, role, course, active, validated, instruments, birthDate, phone, registerNumber, cpf }),
   create)
+
+  /**
+ * @api {post} /users/master Create user with masterkey
+ * @apiName CreateUserMaster
+ * @apiGroup User
+ * @apiPermission master
+ * @apiParam {String} access_token Master access_token.
+ * @apiParam {String} email User's email.
+ * @apiParam {String{6..}} password User's password.
+ * @apiParam {String} [name] User's name.
+ * @apiParam {String} [picture] User's picture.
+ * @apiParam {String=user,admin} [role=user] User's role.
+ * @apiParam {String} [course] User's course.
+ * @apiParam {Boolean} [active] User's active.
+ * @apiParam {Boolean} [validated] User's validated.
+ * @apiParam {[Instruments]} [instruments] User's instruments.
+ * @apiParam {Data} [birthDate] User's birth date.
+ * @apiParam {String} [phone] User's phone.
+ * @apiParam {Number} [registerNumber] User's registerNumber.
+ * @apiParam {Number} [cpf] User's cpf.
+ * @apiSuccess (Sucess 201) {Object} user User's data.
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 401 Master access only.
+ * @apiError 409 Already registered one User with master key.
+ */
+router.post('/master',
+master(),
+body({ email, password, name, picture, role, course, active, validated, instruments, birthDate, phone, registerNumber, cpf }),
+createMaster)
 
 /**
  * @api {put} /users/:id Update user

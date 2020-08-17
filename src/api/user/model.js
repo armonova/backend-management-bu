@@ -70,6 +70,7 @@ const userSchema = new Schema({
   },
   cpf: {
     type: Number,
+    required: true,
     unique: true
   }
 
