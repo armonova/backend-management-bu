@@ -84,6 +84,19 @@ export const update = ({ bodymen: { body }, params, user }, res, next) =>
     .then(success(res))
     .catch(next)
 
+
+export const updateValidatedStatus = ({ bodymen: { body }, params, user }, res, next) =>
+    User.findById(params.id)
+      .then(notFound(res))
+      .then((result) => {
+        if (!result) return null
+        return result
+      })
+      .then((user) => user ? Object.assign(user, body).save() : null)
+      .then((user) => user ? user.view(true) : null)
+      .then(success(res))
+      .catch(next)
+
 export const updatePassword = ({ bodymen: { body }, params, user }, res, next) =>
   User.findById(params.id === 'me' ? user.id : params.id)
     .then(notFound(res))

@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
 import { password as passwordAuth, master, token } from '../../services/passport'
-import { index, showMe, show, create, update, updatePassword, destroy, createMaster } from './controller'
+import { index, showMe, show, create, update, updatePassword, destroy, createMaster, updateValidatedStatus } from './controller'
 import { schema } from './model'
 export User, { schema } from './model'
 
@@ -99,6 +99,23 @@ router.post('/master',
 master(),
 body({ email, password, name, picture, role, course, active, validated, instruments, birthDate, phone, registerNumber, cpf }),
 createMaster)
+
+/**
+ * @api {put} /users/validated/:id Update user validated
+ * @apiName UpdateUserValidated
+ * @apiGroup User
+ * @apiPermission admin
+ * @apiParam {String} access_token User access_token.
+ * @apiParam {Boolean} [validated] User's validated.
+ * @apiSuccess {Object} user User's data.
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 401 Current admin access only.
+ * @apiError 404 User not found.
+ */
+router.put('/validated/:id',
+  token({ required: true, roles: ['admin'] }),
+  body({ validated }),
+  updateValidatedStatus)
 
 /**
  * @api {put} /users/:id Update user
