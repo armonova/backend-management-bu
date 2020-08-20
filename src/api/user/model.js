@@ -45,11 +45,10 @@ const userSchema = new Schema({
   },
   active: {
     type: Boolean,
-    required: true
+    default: false
   },
   validated: {
     type: Boolean,
-    required: true,
     default: false
   },
   instruments: {
@@ -58,8 +57,7 @@ const userSchema = new Schema({
     default: []
   },
   birthDate: {
-    type: Date,
-    required: true
+    type: Date
   },
   phone: {
     type: String
@@ -68,9 +66,7 @@ const userSchema = new Schema({
     type: Number
   },
   cpf: {
-    type: Number,
-    required: true,
-    unique: true
+    type: Number
   }
 
 }, {
