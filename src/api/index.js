@@ -5,6 +5,7 @@ import passwordReset from './password-reset'
 import video from './video'
 import instrument from './instrument'
 import youtubeApi from './youtube-api'
+import documentation from './documentation'
 
 const router = new Router()
 
@@ -37,5 +38,6 @@ router.use('/password-resets', passwordReset)
 router.use('/videos', video)
 router.use('/instruments', instrument)
 router.use('/oauth2callback', youtubeApi)
+router.use('/documentations', documentation)
 
 export default router

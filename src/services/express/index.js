@@ -27,6 +27,8 @@ export default (apiRoot, routes) => {
     app.use(morgan('dev'))
   }
 
+  // app.use(express.static(__dirname + '../../../docs'))
+  app.use('/', express.static(__dirname + '/css/style.css'));
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json())
   app.use(apiRoot, routes)
